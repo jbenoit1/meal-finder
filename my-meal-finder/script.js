@@ -4,7 +4,6 @@ const search = document.getElementById("search"),
   mealsEl = document.getElementById("meals"),
   resultHeading = document.getElementById("result-heading"),
   single_mealEl = document.getElementById("single-meal");
-
 //Seach meal and fetch from API
 function searchMeal(e) {
   e.preventDefault();
@@ -50,13 +49,26 @@ function getMealById(mealID) {
   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-
       const meal = data.meals[0];
 
       addMealToDOM(meal);
     });
 }
+// Ferch random meal
+function getRandomMeal() {
+  // Clear meals and heading
+  mealsEl.innerHTML = "";
+  resultHeading.innerHTML = "";
+
+  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+    .then((res) => res.json())
+    .then((data) => {
+      const meal = data.meals[0];
+
+      addMealToDOM(meal);
+    });
+}
+
 //add meal to DOM
 function addMealToDOM(meal) {
   const ingredients = [];
@@ -90,6 +102,7 @@ function addMealToDOM(meal) {
 
 //Event Listeners
 submit.addEventListener("submit", searchMeal);
+random.addEventListener("click", getRandomMeal);
 mealsEl.addEventListener("click", (e) => {
   const mealInfo = e.path.find((item) => {
     if (item.classList) {
